@@ -1,25 +1,18 @@
-export const customTableStyles = {
-  headCells: {
-    style: {
-      backgroundColor: '#2c3590',
-      color: '#fff',
-      fontWeight: '600',
-      fontFamily: 'Poppins',
-      fontSize: '0.9rem',
-    },
-  },
+export const customStyles = {
   rows: {
     style: {
-      fontSize: '0.85rem',
-      fontFamily: 'Poppins',
-      borderBottom: '1px solid #e0e0e0',
+      minHeight: '40px', // adjust as needed
     },
   },
-  pagination: {
+  headCells: {
     style: {
-      fontFamily: 'Poppins',
+      fontSize: '12px',
+      fontWeight: 'bold',
+    },
+  },
+  cells: {
+    style: {
+      fontSize: '12px',
     },
   },
 };
-
-

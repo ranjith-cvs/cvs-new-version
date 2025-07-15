@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // import App from "./app";
-// import Users from "../layout/user";
+import Users from '../features/users/user';
 // import DemandForecadt from "../layout/demandforecast";
 // import KTMPlan from "../layout/tkmPlan";
 // import ItemMaster from "../layout/itemMaster";
@@ -55,6 +55,7 @@ import Home from '../pages/Home';
 import About from '../pages/About';
 import NotFound from '../pages/NotFound';
 import LoginComponent from '../pages/Login';
+import User from '../features/users/user';
 
 const AppRoutes = () => (
   <BrowserRouter>
@@ -64,6 +65,7 @@ const AppRoutes = () => (
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
         <Route path="/" element={<LoginComponent />} />
+        <Route path="/app/user" element={<User />} />
       </Route>
       {/* 404 */}
       <Route path="*" element={<NotFound />} />

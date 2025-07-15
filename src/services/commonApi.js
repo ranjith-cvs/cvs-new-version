@@ -1,9 +1,6 @@
 import apiURL from "../config/apiConfig";
 
 const getFetch = (uri, method , data = {}) => {
-    console.log("URI",uri);
-    console.log("method",method);
-    console.log("DAta",data);
     return new Promise((resolve, reject) => {
         const options = {
             method: method,
