@@ -1,4 +1,4 @@
-import apiURL from "../config/apiConfig";
+import apiURL from "../../config/apiConfig";
 import axios from "axios";
 import {SET_SELECTED_BRANCH,SET_BRANCH_LIST} from "../types/actionTypes"
 

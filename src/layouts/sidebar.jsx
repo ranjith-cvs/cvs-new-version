@@ -13,6 +13,7 @@ import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import SettingsSuggestOutlinedIcon from '@mui/icons-material/SettingsSuggestOutlined';
 import covalsysLogo from '../assets/logo/covalsyswhitelogo.png';
+import cvsLogo from '../assets/logo/cvs_logo.png';
 import sidebarStyles from '../styles/sidebarStyles';
 
 
@@ -115,16 +116,6 @@ const SideBar = ({ isSideIcon }) => {
     }
   ];
 
-  const LoadMenuDetails = () => {
-    getFetch(`LoadMenu?userID=${localStorage.getItem('id')}`, "GET")
-      .then((data) => {
-        setMenuDetails(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   const filteredMenuItems = menuDetails.filter(menu => {
     if (menu.headName === "Internal Supplier" && branchType === 'N') {
       return false;
@@ -150,16 +141,15 @@ const SideBar = ({ isSideIcon }) => {
   const handleAccordionToggle = (index) => {
     setExpandedMenu(expandedMenu === index ? null : index);
   };
-
+  
   return (
     <Drawer
       variant="persistent"
       open
       sx={sidebarStyles.drawer(isSideIcon)}>
       <Toolbar sx={sidebarStyles.toolbar}>
-        <img src={covalsysLogo} alt="Logo" style={sidebarStyles.logoImage(isSideIcon)} />
+        {isSideIcon ? <img src={cvsLogo} alt="Logo" style={sidebarStyles.logoImage(isSideIcon)} /> : <img src={covalsysLogo} alt="Logo" style={sidebarStyles.logoImage(isSideIcon)} />} 
       </Toolbar>
-
       <Box sx={sidebarStyles.scrollBox}>
         {menuDetails.map((headSection, index) => (
           <List key={index} sx={sidebarStyles.listWrapper}>
@@ -210,7 +200,6 @@ const SideBar = ({ isSideIcon }) => {
           </List>
         ))}
       </Box>
-
       {isSideIcon && (
         <Popover
           open={Boolean(anchorEl)}

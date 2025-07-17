@@ -360,3 +360,138 @@ const SideBar = ({ isSideIcon }) => {
 };
 
 export default SideBar;
+
+
+
+import React, { useState, useMemo } from 'react';
+import {
+  Box,
+  CssBaseline,
+  Drawer,
+  Toolbar,     // spacer height = AppBar height
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import Sidebar from './Sidebar';
+import Header from './header';
+import { Outlet } from 'react-router-dom';
+
+const drawerWidth1 = 240;
+const drawerIconWidth1 = 75;
+
+const MainLayout1 = () => {
+  const theme = useTheme();
+  const isDesktopUp = useMediaQuery(theme.breakpoints.up('sm'));
+
+  // collapsed/mini state (desktop)
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  // mobile temporary drawer open state
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  /* --- handlers --- */
+  const handleMobileToggle = () => setMobileOpen((prev) => !prev);
+  const handleMobileClose = () => setMobileOpen(false);
+
+  // collapse/expand drawer width on desktop
+  const handleCollapseToggle = () => setIsCollapsed((prev) => !prev);
+
+  /* Drawer content (shared) */
+  const drawerContent = (
+    <Box sx={{ height: '100%', bgcolor: '#050e60', color: '#fff' }}>
+      <Sidebar
+        // Use one pair of handlers. Sidebar decides whether to call collapse or mobile close.
+        onCollapseToggle={handleCollapseToggle}
+        onMobileClose={handleMobileClose}
+        isCollapsed={isCollapsed}
+        drawerWidth={drawerWidth}
+        drawerIconWidth={drawerIconWidth}
+        isDesktopUp={isDesktopUp}
+      />
+    </Box>
+  );
+
+  /* current drawer width to use in layout calc (desktop only) */
+  const currentDrawerWidth = isCollapsed ? drawerIconWidth : drawerWidth;
+
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+
+      {/* Fixed app header */}
+      <Header
+        // header shows hamburger on mobile, collapse icon on desktop
+        onMobileToggle={handleMobileToggle}
+        onCollapseToggle={handleCollapseToggle}
+        isCollapsed={isCollapsed}
+        drawerWidth={drawerWidth}
+        drawerIconWidth={drawerIconWidth}
+      />
+
+      {/* Mobile temporary drawer */}
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleMobileToggle}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: 'block', sm: 'none' },
+          '& .MuiDrawer-paper': {
+            width: currentDrawerWidth,
+            boxSizing: 'border-box',
+            bgcolor: '#050e60',
+            color: '#fff',
+          },
+        }}
+      >
+        {drawerContent}
+      </Drawer>
+
+      {/* Desktop permanent drawer */}
+      <Drawer
+        variant="permanent"
+        open
+        sx={{
+          display: { xs: 'none', sm: 'block' },
+          '& .MuiDrawer-paper': {
+            width: currentDrawerWidth,
+            overflowX: 'hidden',
+            boxSizing: 'border-box',
+            transition: theme.transitions.create('width', {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
+            bgcolor: '#050e60',
+            color: '#fff',
+          },
+        }}
+      >
+        {drawerContent}
+      </Drawer>
+
+      {/* Main content area */}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          // push content right when permanent drawer is visible
+          ml: { sm: `${currentDrawerWidth}px` },
+          // vertical layout
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh',
+        }}
+      >
+        {/* push below fixed AppBar height */}
+        <Toolbar />
+
+        {/* page content wrapper */}
+        <Box sx={{ p: 1, flexGrow: 1, width: '100%', overflow: 'auto' }}>
+          <Outlet />
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+export default MainLayout1;

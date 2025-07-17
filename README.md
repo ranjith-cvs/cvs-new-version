@@ -28,7 +28,7 @@ Covalsys-App/
 │   ├── layouts/             # App layout (Sidebar, Header, Footer)
 │   ├── pages/               # Top-level route views (Home, Login, etc.)
 │   ├── routes/              # Route definitions
-│   ├── store/               # State management (Redux, Zustand, etc.)
+│   ├── store/               # State management (Redux)
 │   ├── theme/               # MUI theme setup
 │   ├── utils/               # General helper functions
 │   ├── constants/           # Static app-wide constants, enums

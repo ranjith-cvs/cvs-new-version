@@ -1,18 +1,26 @@
 export const customStyles = {
-  rows: {
-    style: {
-      minHeight: '40px', // adjust as needed
+  components: {
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          padding: '6px 8px',
+          fontSize: '0.85rem',
+        },
+        head: {
+          fontWeight: 700,
+          backgroundColor: '#3a32a2 !important',
+        }
+      }
     },
-  },
-  headCells: {
-    style: {
-      fontSize: '12px',
-      fontWeight: 'bold',
-    },
-  },
-  cells: {
-    style: {
-      fontSize: '12px',
-    },
-  },
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          height: '36px',
+        },
+      }
+    }
+  }
 };
+
+
+
