@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef  } from "react";
 import { Alert, Box, Snackbar,TableContainer,CircularProgress, Card} from "@mui/material";
 import { Close,Done, ModeEditOutlineOutlined, DeleteOutlineOutlined } from "@mui/icons-material";
 import getFetch from "../../services/commonApi";
@@ -13,8 +13,10 @@ import { fetchRoleList, setSelectedRole } from "../../store/actions/roleAction";
 import { fetchBranchList, setSelectedBranch } from "../../store/actions/branchAction";
 
 const Users = () => {
+  const didInit = useRef(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { settingsName, settingsStatus } = useSelector((state) => state.setting);
   const { selectedRoleId, roleList } = useSelector(state => state.role);
   console.log(roleList,"kkkkkkkkkkkkkkkkkkkkk")
   const [message, setMessage] = useState("");
@@ -29,6 +31,17 @@ const Users = () => {
   const [btnText, setbtnText] = useState("Submit");
   const [editingUserID, setEditingUserID] = useState('');
   const [deleteUser, setDeleteUser] = useState('');
+   const [isLoading, setIsLoading] = useState(true);
+  const [userRole, setRole] = useState([]);
+  const [userDepart, setDepart] = useState([]);
+  const [isUpdateMode, setIsUpdateMode] = useState(false);
+  const [supplierData, setSupplierData] = useState([]);
+  const [isDepartmentDisabled, setIsDepartmentDisabled] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [entityData, setEntityData] = useState([]);
+  const [editingDocEntry, setEditingDocEntry] = useState('');
+  
 
   const [formData, setFormData] = useState({
     userName: "",
@@ -40,17 +53,13 @@ const Users = () => {
     //departmentName:""    
   });
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [userRole, setRole] = useState([]);
-  const [userDepart, setDepart] = useState([]);
-  const [isUpdateMode, setIsUpdateMode] = useState(false);
-  const [supplierData, setSupplierData] = useState([]);
-  const [isDepartmentDisabled, setIsDepartmentDisabled] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [popoverOpen, setPopoverOpen] = useState(false);
-  const [entityData, setEntityData] = useState([]);
-  const [editingDocEntry, setEditingDocEntry] = useState('');
-  const { settingsName, settingsStatus } = useSelector((state) => state.setting);
+  useEffect(() => {
+    if (didInit.current) return;
+    didInit.current = true;
+    fetchInfo();
+    dispatch(fetchBranchList());
+    dispatch(fetchRoleList());
+  }, [dispatch]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -100,11 +109,7 @@ const Users = () => {
       });
   };
 
-  useEffect(() => {
-    fetchInfo();
-     dispatch(fetchBranchList());
-     dispatch(fetchRoleList());
-  }, [dispatch]);
+  
 
   const handleClickOpen = () => {
     setFormData([])
@@ -258,20 +263,6 @@ const Users = () => {
       }, 1000);
 
     }
-  };
-
-  const RoleFetch = () => {
-    getFetch("Users/Role", "GET").then((data) => {
-      console.log("Roles", data);
-      setRole(data);
-    });
-  };
-
-  const DepartFetch = () => {
-    getFetch("Entity/Get", "GET").then((data) => {
-      console.log("Department", data);
-      setDepart(data);
-    });
   };
 
   const validateFormData = (formData) => {
